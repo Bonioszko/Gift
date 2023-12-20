@@ -16,4 +16,7 @@ iframe{
     .location{
       padding: 5px
     }
+    iframe{
+        height: 80%;
+    }
   }

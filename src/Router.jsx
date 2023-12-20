@@ -4,11 +4,11 @@ import App from "./App";
 const Router = () => {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/Gift",
       element: <App />,
     },
     {
-      path: "/:location",
+      path: "/Gift/:location",
       element: <Images />,
     },
   ]);
