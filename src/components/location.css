@@ -1,0 +1,19 @@
+
+.location{
+
+    display: grid;
+    grid-template-rows: 5fr 1fr;
+    background-color: var(--third-color);
+    padding: 40px;
+    justify-items: center;
+    align-items: center;
+}
+iframe{
+    height: 100%;
+    width: 100%;
+}
+@media (max-width: 600px){
+    .location{
+      padding: 5px
+    }
+  }

@@ -1,0 +1,358 @@
+package com.sample
+
+import javax.swing.JOptionPane;
+import org.kie.api.runtime.KieRuntime
+import javax.swing.JFrame
+global JFrame frame
+global javax.swing.JTextArea textArea
+
+declare Question
+	text: String
+	response : String
+end
+
+declare Response
+	text: String
+end
+
+function void processQuestion(JFrame frame, KieRuntime krt, Question q) {
+        Object[] options = {"Yes",
+                            "No"};
+
+        int n = JOptionPane.showOptionDialog(frame,
+                                             q.getText(),
+                                             "",
+                                             JOptionPane.YES_NO_OPTION,
+                                             JOptionPane.QUESTION_MESSAGE,
+                                             null,
+                                             options,
+                                             options[0]);
+
+        q.setResponse(options[n].toString());
+}
+
+function void showResult(JFrame frame, KieRuntime krt, Question q) {
+        JOptionPane.showMessageDialog(frame, q.getText(), "Here is your result:", JOptionPane.PLAIN_MESSAGE);
+}
+
+rule "Init"
+	dialect "java"
+	when
+	then
+	Question q = new Question();
+	q.setText("A cartoon based on a video game?");
+	processQuestion(frame, kcontext.getKieRuntime(), q);
+	insert(q);
+end
+
+rule "nintendo"
+	when
+		q : Question (text == "A cartoon based on a video game?", response == "Yes")
+	then
+		q.setText("A nintendo franchise?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+
+rule "nintendo_finish"
+	when
+		q : Question (text == "A nintendo franchise?", response == "Yes")
+	then
+		String response = "1. The Super Mario Bros. Super Show\n2. Captain N The Game Master\n3. The Adventures of Super Mario Bros. 3\n4. Super Mario World\n5. The Legend of Zelda\n6. Pokemon";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_nintendo_finish"
+	when
+		q : Question (text == "A nintendo franchise?", response == "No")
+	then
+		String response = "1. Adventures of Sonic the Hedgehog\n2. Mega Man\n3. Mortal Kombat Defenders of the Realm\n4. Double Dragon\n5. Wing Commander Academy\n6. Street Fighter";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "celebrity"
+	when
+		q : Question (text == "A cartoon based on a video game?", response == "No")
+	then
+		q.setText("A celebrity?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "celebrity_finish"
+	when
+		q : Question (text == "A celebrity?", response == "Yes")
+	then
+		String response = "1. Chuck Norris: Karate Kommandos\n2. Mister T";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "animals_furries"
+	when
+		q : Question (text == "A celebrity?", response == "No")
+	then
+		q.setText("Animals, furries, and the like?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_animals_furries"
+	when q: Question (text == "Animals, furries, and the like?", response =="No")
+	then
+		q.setText("Do you dig giant robots?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "giant_robots_finish"
+	when q: Question(text =="Do you dig giant robots?", response == "Yes")
+	then
+		String response = "1. Robotech\n2. Voltron\n3. Tranformers\n4. Challenge of the Gobots";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_giant_robots"
+when q: Question(text =="Do you dig giant robots?", response == "No")
+	then
+		q.setText("A cartoon based on a movie?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "movie"
+when q: Question(text =="A cartoon based on a movie?", response == "Yes")
+	then
+		q.setText("An R-rated movie?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "non_movie"
+when q: Question(text =="A cartoon based on a movie?", response == "No")
+	then
+		q.setText("Do you want a post apocalyptic setting?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "r-rated"
+when q: Question(text =="An R-rated movie?", response == "Yes")
+	then
+		String response = "1. Rambo and the Force of Freedom\n2. Robocop: The Animated Series\n3. Highlander: The Animated Series";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_r-rated"
+when q: Question(text =="An R-rated movie?", response == "No")
+	then
+		String response = "1. Star Wars: Ewoks\n2. Star Wars: Droids\n3. James Bond Jr.\n4. Extreme Ghostbusters\n5. The Real Ghostbusters";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "apocalyptic"
+when q: Question(text =="Do you want a post apocalyptic setting?", response == "Yes")
+	then
+		String response = "1. Highlander: The Animated Series\n2. Thundarr the Barbarian\n3. Cadilacs and Dinosaurus\n4. Spiral Zone";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_apocalyptic"
+when q: Question(text =="Do you want a post apocalyptic setting?", response == "No")
+	then
+	q.setText("Swords and sorcery?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "swords"
+when q: Question(text =="Swords and sorcery?", response == "Yes")
+	then
+		String response = "1. The Pirates of Dark Water\n2. Thundarr the Barbarian\n3. Visionaries\n4. Dungeons & Dragons\n5. She-Ra, Princess of Power\n6. Conan the Adventurer\n7. He-Man and the Masters of the Universe\n8. King Arthur and the Knights of Justice";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "non_swords"
+when q: Question(text =="Swords and sorcery?", response == "No")
+	then
+		q.setText("Military and law enforcement?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_military"
+when q: Question(text =="Military and law enforcement?", response == "No")
+	then
+		q.setText("Space?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "military"
+when q: Question(text =="Military and law enforcement?", response == "Yes")
+	then
+		String response = "1. C.O.P.S.\n2. G.I. Joe\n3. M.A.S.K.\n4. Spiral Zone\n5. Exosquad\n6. SilverHawks\n7. Centurions\n8. Sky Commanders\n9. Sam & Max: Freelance Police\n10. The Adventure of the Galaxy Rangers\n11. Inspector Gadget\n12. Brave Starr";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "non_space"
+when q: Question(text =="Space?", response == "No")
+	then
+		q.setText("Cowboys?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "space"
+when q: Question(text =="Space?", response == "Yes")
+	then
+		String response = "1. Captains Simian and the Space Monkeys\n2. Jayce and the Wheeled Warriors\n3. Exoscquad\n4. SilverHawks\n5. Sky Commanders\n6. The Adventure of the Galaxy Rangers\n7. BraveStarr";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "cowboys"
+when q: Question(text =="Cowboys?", response == "Yes")
+	then
+		String response = "1. The Adventures of the Galaxy Rangers\n2. BraveStarr\n3. Wild West Cowboys of Moo Mesa";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "non_cowboys"
+when q: Question(text =="Cowboys?", response == "No")
+	then
+		q.setText("Do you want to understand what's going on?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_understand"
+when q: Question(text =="Do you want to understand what's going on?", response == "No")
+	then
+	q.setText("In an awesome way?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+rule "non_awesome"
+when q: Question(text =="In an awesome way?", response == "No")
+	then
+		String response = "1.Aeon Flux";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "awesome"
+when q: Question(text =="In an awesome way?", response == "Yes")
+	then
+		String response = "1. Inhumanoids";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "understand"
+when q: Question(text =="Do you want to understand what's going on?", response == "Yes")
+	then
+	q.setText("Kids doing awesome stuff?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+rule "kids"
+when q: Question(text =="Kids doing awesome stuff?", response == "Yes")
+	then
+	q.setText("In an educational manner?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+
+rule "non_kids"
+when q: Question(text =="Kids doing awesome stuff?", response == "No")
+	then
+	q.setText("Do you like computers?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+
+
+rule "computers"
+when q: Question(text =="Do you like computers?", response == "Yes")
+	then
+		String response = "1. ReBoot";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_computers"
+when q: Question(text =="Do you like computers?", response == "No")
+	then
+	q.setText("Something truly outrageous?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+rule "truly"
+when q: Question(text =="Something truly outrageous?", response == "No")
+	then
+	q.setText("The undead?");
+		processQuestion(frame, kcontext.getKieRuntime(), q);
+		update(q)
+end
+rule "non_truly"
+when q: Question(text =="Something truly outrageous?", response == "Yes")
+	then
+	String response = "1. Jem";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+rule "undead"
+when q: Question(text =="The undead?", response == "Yes")
+	then
+	String response = "1. Mummies Alive\n2. Skeleton Warriors";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_undead"
+when q: Question(text =="The undead?", response == "Yes")
+	then
+	String response = "1. The World of David the Gnome";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "educational"
+when q: Question(text =="In an educational manner?", response == "Yes")
+	then
+	String response = "1. The Magic School Bus\n2. Captain Planet and the Planeteers";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end
+
+rule "non_educational"
+when q: Question(text =="In an educational manner?", response == "No")
+	then
+	String response = "1. Mighty Max\n2. The Real Adventures of Jonny Quest\n3. Bionic Six";
+		q.setText(response);
+		showResult(frame, kcontext.getKieRuntime(), q);
+		update(q);
+end

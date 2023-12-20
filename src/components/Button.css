@@ -1,0 +1,9 @@
+.custom-link{
+    background-color: var(--second-color);
+    color: black;
+    height: 80%;
+    width: 80%;
+    font-size: xx-large;
+    text-decoration: none;
+    text-align: center;
+}
