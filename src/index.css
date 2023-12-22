@@ -83,8 +83,8 @@ select {
   }
 }
 .main{
+
   height: 100dvh;
-  min-height: 100dvh;
   width: 100%;
   background-color: var(--background-color);
   padding: 100px;
@@ -108,5 +108,14 @@ select {
   }
   .content{
     padding: 5px;
+  }
+  .content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .main{
+    height: 100%;
+    min-height: 100dvh;
   }
 }
