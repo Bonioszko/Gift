@@ -1,13 +1,27 @@
 
+@keyframes click {
+  /* 0%{top: 0%; left: 0%;} */
+  /* 10%{top: 50%; left: 50%; transform: rotateZ(90deg)} */
+  /* 70%{transform: translateY(50%)  rotateZ(180deg)}
+  70%{transform: translateY(50%)  rotateZ(900deg)} */
+  /* 20% {top: 25%; left:25%; transform: translate(-50%, -50%);} */
+  0%{transform:   translate(-50%, -50%)scale(1.5) rotateZ(900deg);}
+  /* 40%{top: 50%; left: 50%; transform:  translate(-50%, -50%);} */
+  50%{transform:   translate(-50%, -50%)scale(2) ;}
+  100%{transform:  translate(-50%, -50%);}
+}
 .clicked{
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* top: 50%;
+  left: 50%; */
+  /* transform: translate(-50%, -50%); */
   max-width: 100%;
   height: auto;
-
   z-index: 999;
+  top: 50%; left: 50%;transform: translate(-50%, -50%);
+  animation-name: click;
+  animation-duration: 1s;
+
 }
 .hide{
   display: none;
@@ -28,6 +42,12 @@
 .gallery img {
   max-width: 100%;
   height: auto;
+  border-radius: 20px;
+  border: solid 10px var(--second-color);
+}
+img{
+  border-radius: 20px;
+  border: solid 10px var(--second-color);
 }
 .main-content{
 min-height: 100vh;
@@ -37,4 +57,14 @@ display: flex;
 justify-content: center;
 align-items: center;
 padding: 20px;
+}
+@media (max-width: 600px){
+  .gallery{
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr) );
+  width: 95%;
+  padding: 0px;
+  }
+  .main-content{
+    padding: 5px;
+  }
 }
