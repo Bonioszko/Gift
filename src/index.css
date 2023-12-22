@@ -4,9 +4,14 @@
   box-sizing: border-box;
 }
 :root{
-  --background-color: #b6cdbd;
+  /* --background-color: #b6cdbd;
   --second-color: #394a51;
-  --third-color:#5c715e;
+  --third-color:#5c715e; */
+  --background-color: #CC231E
+
+  ;
+  --second-color: #0F8A5F;
+  --third-color:#235E6F;
 }
 /* Remove default margin */
 body,
@@ -84,6 +89,7 @@ select {
   background-color: var(--background-color);
   padding: 100px;
 
+
 }
 .content{
   height: 100%;
@@ -94,6 +100,7 @@ select {
   gap: 20px;
   grid-template-rows: 1fr 1fr;
   padding: 20px;
+  border-radius: 20px;
 }
 @media (max-width: 600px){
   .main{
